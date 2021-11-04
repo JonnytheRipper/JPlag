@@ -2,7 +2,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>jplag.frontend.i386-amd64-gas-assembly</artifactId>
+  <artifactId>jplag.frontend.gas-i386-amd64</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <build>
@@ -52,8 +52,8 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>de.jplag.frontend.i386-amd64-gas-assembly.Parser</mainClass>
-              <packageName>jplag.frontend.i386-amd64-gas-assembly</packageName>
+              <mainClass>de.jplag.frontend.gas-i386-amd64.Parser</mainClass>
+              <packageName>jplag.frontend.gas-i386-amd64</packageName>
             </manifest>
           </archive>
         </configuration>
