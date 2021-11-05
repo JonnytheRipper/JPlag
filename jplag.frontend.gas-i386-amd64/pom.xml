@@ -52,8 +52,8 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>de.jplag.frontend.gas-i386-amd64.Parser</mainClass>
-              <packageName>jplag.frontend.gas-i386-amd64</packageName>
+              <mainClass>de.jplag.gasI386Amd64.Parser</mainClass>
+              <packageName>jplag.gasI386Amd64</packageName>
             </manifest>
           </archive>
         </configuration>
