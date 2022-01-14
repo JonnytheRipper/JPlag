@@ -2,7 +2,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>jplag.frontend.gas-i386-amd64</artifactId>
+  <artifactId>gas-i386-amd64</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <build>
@@ -37,6 +37,9 @@
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
         <version>4.2</version>
+        <configuration>
+            <libDirectory>./src/main/antlr4/de/jplag/gasI386Amd64/grammar</libDirectory>
+        </configuration>
         <executions>
           <execution>
             <goals>
