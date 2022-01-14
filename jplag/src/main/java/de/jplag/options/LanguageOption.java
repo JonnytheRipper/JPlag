@@ -20,7 +20,8 @@ public enum LanguageOption {
     C_SHARP("csharp", "de.jplag.csharp.Language"),
     CHAR("char", "de.jplag.chars.Language"),
     TEXT("text", "de.jplag.text.Language"),
-    SCHEME("scheme", "de.jplag.scheme.Language");
+    SCHEME("scheme", "de.jplag.scheme.Language"),
+    GAS_I386_AMD64("gasi386amd64", "de.jplag.gasI386Amd64.Language");
 
     private final String classPath;
     private final String displayName;

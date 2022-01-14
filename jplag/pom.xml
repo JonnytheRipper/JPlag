@@ -211,6 +211,13 @@
       <groupId>de.jplag</groupId>
       <artifactId>chars</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>de.jplag</groupId>
+      <artifactId>gas-i386-amd64</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
     <dependency>
       <groupId>com.github.stefanbirkner</groupId>
       <artifactId>system-rules</artifactId>
