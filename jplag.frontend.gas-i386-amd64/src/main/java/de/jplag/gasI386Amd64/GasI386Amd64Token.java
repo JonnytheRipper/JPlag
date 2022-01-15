@@ -47,6 +47,8 @@ public class GasI386Amd64Token extends Token implements GasI386Amd64TokenConstan
 		switch(type) {
 		case TokenConstants.FILE_END:
 			return "***EOF***";
+		case STATEMENT:
+			return "STATEMENT ";
 		default:
 			return "UNKNOWN: \"" + type + "\"";
 		}
