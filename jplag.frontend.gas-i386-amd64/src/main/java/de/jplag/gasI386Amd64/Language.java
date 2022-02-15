@@ -32,7 +32,7 @@ public class Language implements de.jplag.Language {
 	@Override
 	public int minimumTokenMatch() {
 		//TODO: Change to the correct number.
-		return 1; // Dummy value.
+		return 7; // Dummy value.
 	}
 
 	@Override
