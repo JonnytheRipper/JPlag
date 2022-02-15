@@ -1,8 +1,8 @@
 lexer grammar Fragments ;
 
-fragment ALPHA : [a-zA-Z] ;
+ALPHA : [a-zA-Z] ;
 
-fragment DIGIT : [0-9] ;
+DIGIT : [0-9] ;
 
 fragment ESC   : '\\b' | '\\f' | '\\n' | '\\r' | '\\t' | '\\"' | '\\\\' ;
 
@@ -10,32 +10,32 @@ fragment CHAR_ESC : ESC | '\\\'' ;
 
 fragment STR_ESC : ESC | '\\' DIGIT DIGIT DIGIT | ('x' | 'X') (DIGIT | [a-fA-F])+ ;
 
-fragment A     : [aA] ;
-fragment B     : ('b' | 'B') ;
-fragment C     : ('c' | 'C') ;
-fragment D     : ('d' | 'D') ;
-fragment E     : ('e' | 'E') ;
-fragment F     : ('f' | 'F') ;
-fragment G     : ('g' | 'G') ;
-fragment H     : ('h' | 'H') ;
-fragment I     : ('i' | 'I') ;
-fragment J     : ('j' | 'J') ;
-fragment K     : ('k' | 'K') ;
-fragment L     : ('l' | 'L') ;
-fragment M     : ('m' | 'M') ;
-fragment N     : ('n' | 'N') ;
-fragment O     : ('o' | 'O') ;
-fragment P     : ('p' | 'P') ;
-fragment Q     : ('q' | 'Q') ;
-fragment R     : ('r' | 'R') ;
-fragment S     : ('s' | 'S') ;
-fragment T     : ('t' | 'T') ;
-fragment U     : ('u' | 'U') ;
-fragment V     : ('v' | 'V') ;
-fragment W     : ('w' | 'W') ;
-fragment X     : ('x' | 'X') ;
-fragment Y     : ('y' | 'Y') ;
-fragment Z     : ('z' | 'Z') ;
+A     : [aA] ;
+B     : ('b' | 'B') ;
+C     : ('c' | 'C') ;
+D     : ('d' | 'D') ;
+E     : ('e' | 'E') ;
+F     : ('f' | 'F') ;
+G     : ('g' | 'G') ;
+H     : ('h' | 'H') ;
+I     : ('i' | 'I') ;
+J     : ('j' | 'J') ;
+K     : ('k' | 'K') ;
+L     : ('l' | 'L') ;
+M     : ('m' | 'M') ;
+N     : ('n' | 'N') ;
+O     : ('o' | 'O') ;
+P     : ('p' | 'P') ;
+Q     : ('q' | 'Q') ;
+R     : ('r' | 'R') ;
+S     : ('s' | 'S') ;
+T     : ('t' | 'T') ;
+U     : ('u' | 'U') ;
+V     : ('v' | 'V') ;
+W     : ('w' | 'W') ;
+X     : ('x' | 'X') ;
+Y     : ('y' | 'Y') ;
+Z     : ('z' | 'Z') ;
 
 DUMMY_TOKEN : 'ThIs iS a DuMmY tOkEn. It can be removed when the code gets generated' +
     'with antlr4 version 4.7.1 or higher. See https://github.com/antlr/antlr4/pull/2007 for details' ;
