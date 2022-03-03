@@ -8,7 +8,8 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Listener;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ArgumentContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ArithmeticMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssemblerDirectiveContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SetSymbolContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssignDirContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssignmentContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.BitMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.BundleDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CallMneContext;
@@ -17,6 +18,7 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ConditionDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CurrentAddressContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.EquDirContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.EqualityContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericMneContext;
@@ -32,6 +34,7 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MemReferenceContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MovMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.NumberContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.OperandContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.PrefixMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ProgramContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RetMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SectionDirContext;
@@ -39,6 +42,7 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StackMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StatementContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SubExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolMnemonicContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SyscallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.XchgMneContext;
 
@@ -239,13 +243,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterSetSymbol(SetSymbolContext ctx) {
+	public void enterAssignment(AssignmentContext ctx) {
 		// TODO Auto-generated method stub
-		
+		jplagParser.add(ASSIGNMENT, ctx.getStart());
 	}
 
 	@Override
-	public void exitSetSymbol(SetSymbolContext ctx) {
+	public void exitAssignment(AssignmentContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -498,6 +502,54 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 
 	@Override
 	public void exitSubExpr(SubExprContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enterEquality(EqualityContext ctx) {
+		// TODO Auto-generated method stub
+		jplagParser.add(EQU_DIR, ctx.getStart());
+	}
+
+	@Override
+	public void exitEquality(EqualityContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enterAssignDir(AssignDirContext ctx) {
+		// TODO Auto-generated method stub
+		jplagParser.add(ASSIGNMENT, ctx.getStart());
+	}
+
+	@Override
+	public void exitAssignDir(AssignDirContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enterPrefixMne(PrefixMneContext ctx) {
+		// TODO Auto-generated method stub
+		// Prefixes get ignored.
+	}
+
+	@Override
+	public void exitPrefixMne(PrefixMneContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enterSymbolMnemonic(SymbolMnemonicContext ctx) {
+		// TODO Auto-generated method stub
+		// This is a symbol which the lexer categorized as mnemonic because its name equals a (mnemonic) keyword.
+	}
+
+	@Override
+	public void exitSymbolMnemonic(SymbolMnemonicContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -6,15 +6,30 @@ import AssemblerDirectives, Fragments, Mnemonics ;
 
 // Parser
 
-program              : (STATEMENT_TERMINATOR | statement STATEMENT_TERMINATOR)+ | EOF ;
+program              : (statement STATEMENT_TERMINATOR)+
+                     | STATEMENT_TERMINATOR+
+                     | EOF
+                     ;
 
-//statementTerminator  : '\n' | ';' ;
+statement            : label* symbol?
+                     | assignment
+                     | equality
+                     ;
 
-statement            : setSymbol | (label* symbol?) ;
+label                : '$'? SYMBOL_NAME ':'
+                     | '$'? symbolMnemonic ':'
+                     | '$'? REGISTER ':'
+                     | '$'? MEM_OP_PREFIX ':'
+                     | LOCAL_LABEL
+                     ;
 
-label                : '$'? NAME ':' | LOCAL_LABEL ;
-
-symbol               : assemblerDirective | instruction /*| LOCAL_SYMBOL */ | '$'? NAME | STRING ;
+symbol               : assemblerDirective // Might make a lot of sense to move assemblerDirective and instruction directly into statement
+                     | instruction
+                     | '$'? SYMBOL_NAME
+                   /*| LOCAL_SYMBOL */
+                     | LOCAL_LABEL_NAME
+                     | STRING
+                     ;
 
 asmDirective
   : SECTION_DIR       # sectionDir
@@ -23,10 +38,13 @@ asmDirective
   | BUNDLE_DIR        # bundleDir
   | CFI_DIR           # cfiDir
   | EQU_DIR           # equDir
+  | ASSIGN_DIR        # assignDir
   | GENERIC_DIR       # genericDir
   ;
 
 assemblerDirective   : asmDirective ~STATEMENT_TERMINATOR* ;
+
+//assemblerDirective : (sectionDir | conditionDir | macroDir | bundleDir | cfiDir | equDir | assignDir | genericDir) .*? STATEMENT_TERMINATOR ;
 
 mnemonic
   : MOV_MNE             # movMne
@@ -40,7 +58,24 @@ mnemonic
   | RET_MNE             # retMne
   | LOGIC_MNE           # logicMne
   | BIT_MNE             # bitMne
+  | PREFIX_MNE          # prefixMne
   | GENERIC_MNE         # genericMne
+  ;
+
+symbolMnemonic // Circumvents the listener
+  : MOV_MNE
+  | STACK_MNE
+  | XCHG_MNE
+  | ARITHMETIC_MNE
+  | SYSCALL_MNE
+  | JMP_MNE
+  | CMP_MNE
+  | CALL_MNE
+  | RET_MNE
+  | LOGIC_MNE
+  | BIT_MNE
+  | PREFIX_MNE
+  | GENERIC_MNE
   ;
 
 /*pseudoPrefix
@@ -53,49 +88,79 @@ mnemonic
   | R E X                       // prefer REX prefix for integer and legacy vector instructions
   | N O O P T I M I Z E         // disable instruction size optimization
   ) '}' ;
-*/             
-instruction          : PSEUDO_PREFIX* mnemonic ('*'? operand | operand? (','? operand)*) ; // The ',' might be required.
+*/
+
+/*instr_prefix
+  : OP_ADDR_PREFIX
+  | PSEUDO_PREFIX
+  | REPEAT_PREFIX
+  | REX_PREFIX
+  | BUS_LOCK_PREFIX
+  | CO_PROCESSOR_PREFIX
+  ;*/
+
+instruction
+  : mnemonic+ ('*'? operand | operand? (','? operand)*) ; // The ',' might be required.
 
 operand
-  : (REGISTER ':')? memReference EVEX?
-  | REGISTER EVEX*
+  : (REGISTER ':')? memReference ('{' .*? '}')? //EVEX?
+  | REGISTER ('{' .*? '}')* //EVEX*
   | MEM_OP_PREFIX? (REGISTER ':')? immediate
-  | EVEX
+  | '{' .*? '}' // EVEX
+  //| '$'? SYMBOL_NAME // Basically a label without ':' or the result of an assignment.
+  //| LOCAL_LABEL_NAME
   ;
-//| '$'? NAME ('@' NAME)? ;
+//| '$'? SYMBOL_NAME ('@' '$'? SYMBOL_NAME)? ;
 
 memReference
   : (REGISTER ':')? immediate? '(' REGISTER? ','? REGISTER? ','? immediate? ')' // AT&T syntax
   | (REGISTER ':')? MEM_OP_PREFIX? (REGISTER ':')? '[' REGISTER? '+'? immediate? '*'? REGISTER? '*'? immediate? '+'? immediate? ']' // Intel syntax
   ;
 
-//immediate            : '$'? (integer | '$'? NAME) ; // TODO: might be more like $number
-immediate            : '$'? expr | label ; // could remove this and plug the "expr" right into the "operand"
+immediate            : expr
+                     | '$'? LOL
+                     | LOCAL_LABEL_NAME
+                     | '$'? symbolMnemonic // In case a symbol has the same name as a mnemonic.
+                     ;
 
 integer              : ('-' | '~')? (BINARY_INT | OCT_INT | DEC_INT | HEX_INT) ;
 
-//constant           : number | CHAR | STRING ;
+//constant           : number | CHAR | STRING ; // Not sure if this is even needed somewhere.
 
-number               : integer | FLOAT ;
+number               : '$'? (integer | FLOAT) ;
 
-argument             : symbol | (REGISTER ':')? number | subExpr | '$'? NAME ('@' NAME)? | currentAddress ;
+argument             : '$'? SYMBOL_NAME ('@' '$'? SYMBOL_NAME)?
+                     | (REGISTER ':')? number
+                     | '$'? subExpr
+                     | LOCAL_LABEL_NAME
+                     | currentAddress
+                     | symbolMnemonic
+                     | REGISTER
+                     | MEM_OP_PREFIX
+                     ;
 
-//expr               : (addr | numeric_value)? ;
+expr                 : intExpr ; // or empty
 
-expr                 : intExpr ; // check this and clean it up
+intExpr             : ('-' | '~')? argument ((INFIX_OP | '+' | '-' | '*' | '==') ('-' | '~')? argument)* ;
 
-intExpr             : ('-' | '~')? argument ((INFIX_OP | '+' | '-' | '*') ('-' | '~')? argument)* ;
+subExpr             : '(' intExpr ')'
+                    | ('-' | '~') argument
+                    ;
 
-subExpr             : '(' intExpr ')' | ('-' | '~') argument ;
+assignment          : '$'? SYMBOL_NAME '=' expr ;
 
-setSymbol           : symbol '=' expr ;
+equality            : '$'? SYMBOL_NAME '==' expr ;
 
 currentAddress      : '.' ;
 
-//name                : (ALPHA | '_' | '.')+ (ALPHA | DIGIT | '_' | '.' | '$')* ;
+//symbolName        : SYMBOL_NAME | assemblerDirective ; //(ALPHA | '_')+ (ALPHA | DIGIT | '_' | '.' | '$')* ;
+
 
 // Lexer
 
+// The '/' character introduces a comment as long as the --divide command line option has not been specified.
+// Although this might collide with the '/' infix operator it does not lead to problems as we are usually not interested
+// in the part that follows the division symbol. 
 LINE_COMMENT   : ('#' | '/') ~'\n'* -> skip ;
 
 BLOCK_COMMENT  : '/*' .*? '*/' -> skip ;
@@ -132,7 +197,7 @@ REGISTER  : '%'?
           | S T [0-7] | F C W | F S W | M X C S R
           ) ;
 
-PSEUDO_PREFIX
+/*PSEUDO_PREFIX
   : '{'
   ( D I S P ('8' | '16' | '32') // prefer 8/16/32-bit displacement
   | L O A D                     // prefer load-form instruction
@@ -141,12 +206,65 @@ PSEUDO_PREFIX
   | E V E X                     // encode with EVEX prefix
   | R E X                       // prefer REX prefix for integer and legacy vector instructions
   | N O O P T I M I Z E         // disable instruction size optimization
-  ) '}' ;
+  ) '}'
+  ;
+
+OP_ADDR_PREFIX
+  : A D D R ('16' | '32')
+  | D A T A ('16' | '32')
+  ;
+
+REPEAT_PREFIX
+  : R E P
+  | R E P E
+  | R E P Z
+  | R E P N E
+  | R E P N Z
+  ;
+
+REX_PREFIX
+  : R E X
+  | R E X Z
+  | R E X Y
+  | R E X Y Z
+  | R E X X
+  | R E X X Z
+  | R E X X Y
+  | R E X X Y Z
+  | R E X '6' '4'
+  | R E X '6' '4' Z
+  | R E X '6' '4' Y
+  | R E X '6' '4' Y Z
+  | R E X '6' '4' X
+  | R E X '6' '4' X Z
+  | R E X '6' '4' X Y
+  | R E X '6' '4' X Y Z
+  | R E X '.' B
+  | R E X '.' X
+  | R E X '.' X B
+  | R E X '.' R
+  | R E X '.' R B
+  | R E X '.' R X
+  | R E X '.' R X B
+  | R E X '.' W
+  | R E X '.' W B
+  | R E X '.' W X
+  | R E X '.' W X B
+  | R E X '.' W R
+  | R E X '.' W R B
+  | R E X '.' W R X
+  | R E X '.' W R X B
+  ;
+
+BUS_LOCK_PREFIX : L O C K ; // Bus lock prefix
+CO_PROCESSOR_PREFIX : W A I T ;// Coprocessor prefix
+*/
 
 //EVEX_MASK_REG   : '{' REGISTER '}' ('{' Z '}')? ;
 //EVEX_BROADCAST  : 
 //EVEX_ROUNDING   :
-EVEX           : '{' .*? '}' ; // EVEX: instruction encoding support for AVX-512 instructions
+//TODO: EVEX could be removed as it gets handled with the mnemonics. Additionally, its application in the parser seems questionable.
+//EVEX           : '{' .*? '}' ; // EVEX: instruction encoding support for AVX-512 instructions
 
 STATEMENT_TERMINATOR : '\n' | '\r' | '\n\r' | ';' ;
 
@@ -156,8 +274,8 @@ MACRO_DIR      : MACRO_DIRECTIVE ;
 BUNDLE_DIR     : BUNDLE_DIRECTIVE ;
 CFI_DIR        : CFI_DIRECTIVE ;
 EQU_DIR        : EQU_DIRECTIVE ;
-GENERIC_DIR    : GENERIC_DIRECTIVE ; //TODO: should it be implemented like this: `~[\n;]*`? Would catch some lexer errors.
-
+ASSIGN_DIR     : ASSIGN_DIRECTIVE ;
+GENERIC_DIR    : GENERIC_DIRECTIVE ;
 
 MEM_OP_PREFIX :
   ( B Y T E
@@ -183,35 +301,39 @@ CMP_MNE            : CMP_MNEMONIC ;
 CALL_MNE           : CALL_MNEMONIC ;
 RET_MNE            : RET_MNEMONIC ;
 BIT_MNE            : BIT_MNEMONIC ;
+PREFIX_MNE         : PREFIX_MNEMONIC ;
 GENERIC_MNE        : GENERIC_MNEMONIC ;
 
 //LOCAL_SYMBOL : '.'? L (ALPHA | DIGIT | [_.$])+ ;
 
-//LABEL          : '$'? NAME ':';
-LOCAL_LABEL    : (DIGIT+ ':') | (DIGIT+ ('f' | 'b')) ;
+LOCAL_LABEL        : (DIGIT+ ':') ;
 
-WS             : [ \t]+ -> skip ;
+LOCAL_LABEL_NAME     : (DIGIT+ ('f' | 'b')) ;
 
-BINARY_INT     : '0' ('b' | 'B') [01]* ;
+WS                 : [ \t]+ -> skip ;
 
-HEX_INT        : '0' ('x' | 'X') (DIGIT | [a-fA-F])+ ;
+BINARY_INT         : '0' ('b' | 'B') [01]* ;
 
-DEC_INT        : [1-9] DIGIT* ;
+HEX_INT            : '0' ('x' | 'X') (DIGIT | [a-fA-F])+ ;
 
-OCT_INT        : '0' [0-7]* ;
+DEC_INT            : [1-9] DIGIT* ;
 
-FLOAT          : ('.' (F L O A T | S I N G L E | D O U B L E | T F L O A T) DEC_INT)? '0' ALPHA ('+' | '-')? DIGIT* ('.' DIGIT*)? (('e' | 'E') ('+' | '-')? DIGIT+)? ;
+OCT_INT            : '0' [0-7]* ;
 
-//NAME           : [a-zA-Z_.]+ [a-zA-Z0-9_.$]* ;
-NAME           : (ALPHA | [_.])+ (ALPHA | DIGIT | [_.$])* ;
+FLOAT              : ('.' (F L O A T | S I N G L E | D O U B L E | T F L O A T) DEC_INT)? '0' ALPHA ('+' | '-')? DIGIT* ('.' DIGIT*)? (('e' | 'E') ('+' | '-')? DIGIT+)? ;
 
-CHAR           : '\'' (ALPHA | CHAR_ESC) '\'' ;
+//SYMBOL_NAME             : [a-zA-Z_.]+ [a-zA-Z0-9_.$]* ;
+SYMBOL_NAME        : (ALPHA | [_.])+ (ALPHA | DIGIT | [_.$])* ;
 
-STRING         : '"' (ESC | .)*? '"' | '\'' (ESC | .)*? '\'' ;
+LOL : SYMBOL_NAME ;
 
-INFIX_OP       : '/' | '%' | '<<' | '>>'
-               | '|' | '&' | '==' | '!='
-               | '^' | '!' | '<=' | '>='
-               | '<' | '>' | '&&' | '||'
-               | '<>'
-               ;
+CHAR               : '\'' (ALPHA | CHAR_ESC) '\'' ;
+
+STRING             : '"' (ESC | .)*? '"'
+                   | '\'' (ESC | .)*? '\'' ;
+
+INFIX_OP           : '/' | '%' | '<<' | '>>'
+                   | '|' | '&' | '<>' | '!='
+                   | '^' | '!' | '<=' | '>='
+                   | '<' | '>' | '&&' | '||'
+                   ;

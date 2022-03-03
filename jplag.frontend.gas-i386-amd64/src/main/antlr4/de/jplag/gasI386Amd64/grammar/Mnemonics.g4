@@ -746,6 +746,70 @@ BIT_MNEMONIC :
   | V P R O R Q
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+PREFIX_MNEMONIC :
+  ( A D D R '1' '6'
+  | A D D R '3' '2'
+  | B N D
+  | D A T A '1' '6'
+  | D A T A '3' '2'
+  | L O C K
+  | N O T R A C K
+  | W A I T
+  | R E P
+  | R E P E
+  | R E P Z
+  | R E P N E
+  | R E P N Z
+  | R E X
+  | R E X Z
+  | R E X Y
+  | R E X Y Z
+  | R E X X
+  | R E X X Z
+  | R E X X Y
+  | R E X X Y Z
+  | R E X '6' '4'
+  | R E X '6' '4' Z
+  | R E X '6' '4' Y
+  | R E X '6' '4' Y Z
+  | R E X '6' '4' X
+  | R E X '6' '4' X Z
+  | R E X '6' '4' X Y
+  | R E X '6' '4' X Y Z
+  | R E X '.' B
+  | R E X '.' X
+  | R E X '.' X B
+  | R E X '.' R
+  | R E X '.' R B
+  | R E X '.' R X
+  | R E X '.' R X B
+  | R E X '.' W
+  | R E X '.' W B
+  | R E X '.' W X
+  | R E X '.' W X B
+  | R E X '.' W R
+  | R E X '.' W R B
+  | R E X '.' W R X
+  | R E X '.' W R X B
+  | '{' D I S P '8' '}'
+  | '{' D I S P '1' '6' '}'
+  | '{' D I S P '3' '2' '}'
+  | '{' L O A D '}'
+  | '{' S T O R E '}'
+  | '{' V E X '}'
+  | '{' V E X '2' '}'
+  | '{' V E X '3' '}'
+  | '{' E V E X '}'
+  | '{' R E X '}'
+  | '{' N O O P T I M I Z E '}'
+  | C S
+  | D S
+  | E S
+  | F S
+  | G S
+  | S S
+  ) ;
+
 //TODO: LOAD_MNEMONIC :
 // e.g. LODS
 
@@ -842,7 +906,7 @@ GENERIC_MNEMONIC :
   | B T S
   | I N T '1'
   | I N T '3'
-  | I N T [01]?[0-9][0-9]? | '2'[0-4][0-9] | '2''5'[0-5]
+  | I N T ([01]?[0-9][0-9]? | '2'[0-4][0-9] | '2''5'[0-5])
   | I N T O
   | R S M
   | B O U N D
@@ -937,71 +1001,12 @@ GENERIC_MNEMONIC :
   | F F R E E P
   | F N O P
   | F W A I T
-  | A D D R '1' '6'
-  | A D D R '3' '2'
   | A W O R D
   | A D W O R D
-  | D A T A '1' '6'
-  | D A T A '3' '2'
   | W O R D
   | D W O R D
-  | L O C K
-  | W A I T
-  | C S
-  | D S
-  | E S
-  | F S
-  | G S
-  | S S
-  | R E P
-  | R E P E
-  | R E P Z
-  | R E P N E
-  | R E P N Z
   | H T
   | H N T
-  | R E X
-  | R E X Z
-  | R E X Y
-  | R E X Y Z
-  | R E X X
-  | R E X X Z
-  | R E X X Y
-  | R E X X Y Z
-  | R E X '6' '4'
-  | R E X '6' '4' Z
-  | R E X '6' '4' Y
-  | R E X '6' '4' Y Z
-  | R E X '6' '4' X
-  | R E X '6' '4' X Z
-  | R E X '6' '4' X Y
-  | R E X '6' '4' X Y Z
-  | R E X '.' B
-  | R E X '.' X
-  | R E X '.' X B
-  | R E X '.' R
-  | R E X '.' R B
-  | R E X '.' R X
-  | R E X '.' R X B
-  | R E X '.' W
-  | R E X '.' W B
-  | R E X '.' W X
-  | R E X '.' W X B
-  | R E X '.' W R
-  | R E X '.' W R B
-  | R E X '.' W R X
-  | R E X '.' W R X B
-  | '{' D I S P '8' '}'
-  | '{' D I S P '1' '6' '}'
-  | '{' D I S P '3' '2' '}'
-  | '{' L O A D '}'
-  | '{' S T O R E '}'
-  | '{' V E X '}'
-  | '{' V E X '2' '}'
-  | '{' V E X '3' '}'
-  | '{' E V E X '}'
-  | '{' R E X '}'
-  | '{' N O O P T I M I Z E '}'
   | B S W A P
   | I N V D
   | W B I N V D
@@ -1713,7 +1718,6 @@ GENERIC_MNEMONIC :
   | R D S E E D
   | C L A C
   | S T A C
-  | B N D
   | B N D M K
   | B N D C L
   | B N D C U
@@ -2038,7 +2042,6 @@ GENERIC_MNEMONIC :
   | C L R S S B S Y
   | E N D B R '6' '4'
   | E N D B R '3' '2'
-  | N O T R A C K
   | W B N O I N V D
   | P C O N F I G
   | U M O N I T O R

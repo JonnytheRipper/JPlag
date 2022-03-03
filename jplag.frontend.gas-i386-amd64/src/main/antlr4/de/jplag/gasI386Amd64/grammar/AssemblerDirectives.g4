@@ -87,10 +87,13 @@ CFI_DIRECTIVE :
 EQU_DIRECTIVE :
   '.'
   ( E Q U
-  | S E T
+//  | S E T
   | E Q U I V
   | E Q V
   ) ~[\n;]*? ;
+
+ASSIGN_DIRECTIVE :
+  '.' S E T ~[\n;]*? ;
 
 GENERIC_DIRECTIVE :
   '.'
