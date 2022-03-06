@@ -2,7 +2,7 @@
 
 grammar GasI386Amd64 ;
 
-import AssemblerDirectives, Fragments, Mnemonics ;
+import AssemblerDirectives, /*AsmDir,*/ Fragments, Mnemonics ;
 
 // Parser
 
@@ -11,21 +11,22 @@ program              : (statement STATEMENT_TERMINATOR)+
                      | EOF
                      ;
 
-statement            : label* symbol?
+statement            : label* (assemblerDirective | instruction | symbol)?
                      | assignment
                      | equality
                      ;
 
-label                : '$'? SYMBOL_NAME ':'
-                     | '$'? symbolMnemonic ':'
+label                : '$'? SYMBOL_NAME ':'//symbol ':' //'$'? symbolName ':'
+                     | '$'? symbolLikeMnemonic ':'
                      | '$'? REGISTER ':'
                      | '$'? MEM_OP_PREFIX ':'
                      | LOCAL_LABEL
                      ;
 
-symbol               : assemblerDirective // Might make a lot of sense to move assemblerDirective and instruction directly into statement
-                     | instruction
-                     | '$'? SYMBOL_NAME
+symbol               : //assemblerDirective // Might make a lot of sense to move assemblerDirective and instruction directly into statement
+                      //instruction
+                      '$'? SYMBOL_NAME
+                     | symbolLikeAsmDirective
                    /*| LOCAL_SYMBOL */
                      | LOCAL_LABEL_NAME
                      | STRING
@@ -43,8 +44,18 @@ asmDirective
   ;
 
 assemblerDirective   : asmDirective ~STATEMENT_TERMINATOR* ;
-
 //assemblerDirective : (sectionDir | conditionDir | macroDir | bundleDir | cfiDir | equDir | assignDir | genericDir) .*? STATEMENT_TERMINATOR ;
+
+symbolLikeAsmDirective
+  : SECTION_DIR
+  | CONDITION_DIR
+  | MACRO_DIR
+  | BUNDLE_DIR
+  | CFI_DIR
+  | EQU_DIR
+  | ASSIGN_DIR
+  | GENERIC_DIR
+  ;
 
 mnemonic
   : MOV_MNE             # movMne
@@ -58,11 +69,11 @@ mnemonic
   | RET_MNE             # retMne
   | LOGIC_MNE           # logicMne
   | BIT_MNE             # bitMne
-  | PREFIX_MNE          # prefixMne
+  //| PREFIX_MNE          # prefixMne
   | GENERIC_MNE         # genericMne
   ;
 
-symbolMnemonic // Circumvents the listener
+symbolLikeMnemonic // Circumvents the listener
   : MOV_MNE
   | STACK_MNE
   | XCHG_MNE
@@ -100,27 +111,30 @@ symbolMnemonic // Circumvents the listener
   ;*/
 
 instruction
-  : mnemonic+ ('*'? operand | operand? (','? operand)*) ; // The ',' might be required.
+  : PREFIX_MNE
+  | symbolLikeMnemonic* mnemonic ('*'? operand | operand? (','? operand)*) ; // The ',' might be required.
 
 operand
   : (REGISTER ':')? memReference ('{' .*? '}')? //EVEX?
   | REGISTER ('{' .*? '}')* //EVEX*
   | MEM_OP_PREFIX? (REGISTER ':')? immediate
   | '{' .*? '}' // EVEX
-  //| '$'? SYMBOL_NAME // Basically a label without ':' or the result of an assignment.
-  //| LOCAL_LABEL_NAME
   ;
 //| '$'? SYMBOL_NAME ('@' '$'? SYMBOL_NAME)? ;
 
 memReference
-  : (REGISTER ':')? immediate? '(' REGISTER? ','? REGISTER? ','? immediate? ')' // AT&T syntax
+  : (REGISTER ':')? immediate? '(' REGISTER ','? REGISTER? ','? immediate? ')' // AT&T syntax
+  | (REGISTER ':')? immediate? '(' REGISTER? ','? REGISTER ','? immediate? ')' // AT&T syntax
+  | (REGISTER ':')? immediate? '(' REGISTER? ','? REGISTER? ','? immediate ')' // AT&T syntax
   | (REGISTER ':')? MEM_OP_PREFIX? (REGISTER ':')? '[' REGISTER? '+'? immediate? '*'? REGISTER? '*'? immediate? '+'? immediate? ']' // Intel syntax
+  //: (REGISTER ':')? immediate? '(' .*? ')' // AT&T syntax
+  //| (REGISTER ':')? MEM_OP_PREFIX? (REGISTER ':')? '[' .*? ']' // Intel syntax
   ;
 
-immediate            : expr
-                     | '$'? LOL
+immediate            : '$'? symbol //'$'? SYMBOL_NAME
                      | LOCAL_LABEL_NAME
-                     | '$'? symbolMnemonic // In case a symbol has the same name as a mnemonic.
+                     | expr
+                     | '$'? symbolLikeMnemonic // In case a symbol has the same name as a mnemonic.
                      ;
 
 integer              : ('-' | '~')? (BINARY_INT | OCT_INT | DEC_INT | HEX_INT) ;
@@ -129,12 +143,12 @@ integer              : ('-' | '~')? (BINARY_INT | OCT_INT | DEC_INT | HEX_INT) ;
 
 number               : '$'? (integer | FLOAT) ;
 
-argument             : '$'? SYMBOL_NAME ('@' '$'? SYMBOL_NAME)?
+argument             : '$'? symbol ('@' '$'? symbol)?
                      | (REGISTER ':')? number
                      | '$'? subExpr
                      | LOCAL_LABEL_NAME
                      | currentAddress
-                     | symbolMnemonic
+                     | symbolLikeMnemonic
                      | REGISTER
                      | MEM_OP_PREFIX
                      ;
@@ -147,9 +161,9 @@ subExpr             : '(' intExpr ')'
                     | ('-' | '~') argument
                     ;
 
-assignment          : '$'? SYMBOL_NAME '=' expr ;
+assignment          : '$'? symbol '=' expr ;
 
-equality            : '$'? SYMBOL_NAME '==' expr ;
+equality            : '$'? symbol '==' expr ;
 
 currentAddress      : '.' ;
 
@@ -324,8 +338,6 @@ FLOAT              : ('.' (F L O A T | S I N G L E | D O U B L E | T F L O A T) 
 
 //SYMBOL_NAME             : [a-zA-Z_.]+ [a-zA-Z0-9_.$]* ;
 SYMBOL_NAME        : (ALPHA | [_.])+ (ALPHA | DIGIT | [_.$])* ;
-
-LOL : SYMBOL_NAME ;
 
 CHAR               : '\'' (ALPHA | CHAR_ESC) '\'' ;
 

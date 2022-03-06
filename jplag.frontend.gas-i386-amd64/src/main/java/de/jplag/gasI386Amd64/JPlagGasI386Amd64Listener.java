@@ -34,7 +34,6 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MemReferenceContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MovMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.NumberContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.OperandContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.PrefixMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ProgramContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RetMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SectionDirContext;
@@ -42,7 +41,8 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StackMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StatementContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SubExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolMnemonicContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolLikeAsmDirectiveContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolLikeMnemonicContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SyscallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.XchgMneContext;
 
@@ -531,25 +531,25 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterPrefixMne(PrefixMneContext ctx) {
-		// TODO Auto-generated method stub
-		// Prefixes get ignored.
-	}
-
-	@Override
-	public void exitPrefixMne(PrefixMneContext ctx) {
+	public void enterSymbolLikeAsmDirective(SymbolLikeAsmDirectiveContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void enterSymbolMnemonic(SymbolMnemonicContext ctx) {
+	public void exitSymbolLikeAsmDirective(SymbolLikeAsmDirectiveContext ctx) {
 		// TODO Auto-generated method stub
-		// This is a symbol which the lexer categorized as mnemonic because its name equals a (mnemonic) keyword.
+		
 	}
 
 	@Override
-	public void exitSymbolMnemonic(SymbolMnemonicContext ctx) {
+	public void enterSymbolLikeMnemonic(SymbolLikeMnemonicContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exitSymbolLikeMnemonic(SymbolLikeMnemonicContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}

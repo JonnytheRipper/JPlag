@@ -808,6 +808,8 @@ PREFIX_MNEMONIC :
   | F S
   | G S
   | S S
+  | X A C Q U I R E
+  | X R E L E A S E
   ) ;
 
 //TODO: LOAD_MNEMONIC :
@@ -1510,8 +1512,6 @@ GENERIC_MNEMONIC :
   | V F N M S U B '2' '1' '3' S S
   | V F N M S U B '2' '3' '1' S D
   | V F N M S U B '2' '3' '1' S S
-  | X A C Q U I R E
-  | X R E L E A S E
   | X A B O R T
   | X B E G I N
   | X E N D
