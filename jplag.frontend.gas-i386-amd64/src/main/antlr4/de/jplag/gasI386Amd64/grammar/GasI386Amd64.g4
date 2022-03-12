@@ -161,9 +161,9 @@ FLOAT              : ('.' (F L O A T | S I N G L E | D O U B L E | T F L O A T) 
 
 SYMBOL_NAME        : (ALPHA | [_.])+ (ALPHA | DIGIT | [_.$])*
   {
-  	if (macros.contains(this.getText())) {
-  	  this.setType(MACRO_INVOCATION);
-  	}
+    if (macros.contains(this.getText())) {
+      this.setType(MACRO_INVOCATION);
+    }
   }
   ;
 
