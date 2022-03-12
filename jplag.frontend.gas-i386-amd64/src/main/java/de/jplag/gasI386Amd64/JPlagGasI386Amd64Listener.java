@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Listener;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ArgumentContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ArithmeticMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssemblerDirectiveContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssignDirContext;
@@ -16,33 +15,25 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CfiDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ConditionDirContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CurrentAddressContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.EquDirContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.EqualityContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericMneContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ImmediateContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.InstructionContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.IntExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.IntegerContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.JmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.LabelContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.LogicMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MacroDirContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MemReferenceContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MacroInvocationContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MovMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.NumberContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.OperandContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.PrefixMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ProgramContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RetMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SectionDirContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SequenceDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StackMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StatementContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SubExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolLikeAsmDirectiveContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolLikeMnemonicContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SyscallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.XchgMneContext;
 
@@ -113,41 +104,6 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterArgument(ArgumentContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitArgument(ArgumentContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterIntExpr(IntExprContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitIntExpr(IntExprContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterExpr(ExprContext ctx) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void exitExpr(ExprContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void enterLabel(LabelContext ctx) {
 		// TODO Auto-generated method stub
 		jplagParser.add(LABEL, ctx.getStart());
@@ -172,60 +128,12 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterImmediate(ImmediateContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitImmediate(ImmediateContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void enterInstruction(InstructionContext ctx) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void exitInstruction(InstructionContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterMemReference(MemReferenceContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitMemReference(MemReferenceContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterOperand(OperandContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitOperand(OperandContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterCurrentAddress(CurrentAddressContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitCurrentAddress(CurrentAddressContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -435,18 +343,6 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterEquDir(EquDirContext ctx) {
-		// TODO Auto-generated method stub
-		jplagParser.add(EQU_DIR, ctx.getStart());
-	}
-
-	@Override
-	public void exitEquDir(EquDirContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void enterBundleDir(BundleDirContext ctx) {
 		// TODO Auto-generated method stub
 		jplagParser.add(BUNDLE_DIR, ctx.getStart());
@@ -495,30 +391,6 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterSubExpr(SubExprContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitSubExpr(SubExprContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterEquality(EqualityContext ctx) {
-		// TODO Auto-generated method stub
-		jplagParser.add(EQU_DIR, ctx.getStart());
-	}
-
-	@Override
-	public void exitEquality(EqualityContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void enterAssignDir(AssignDirContext ctx) {
 		// TODO Auto-generated method stub
 		jplagParser.add(ASSIGNMENT, ctx.getStart());
@@ -531,25 +403,37 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterSymbolLikeAsmDirective(SymbolLikeAsmDirectiveContext ctx) {
+	public void enterPrefixMne(PrefixMneContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void exitSymbolLikeAsmDirective(SymbolLikeAsmDirectiveContext ctx) {
+	public void exitPrefixMne(PrefixMneContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void enterSymbolLikeMnemonic(SymbolLikeMnemonicContext ctx) {
+	public void enterSequenceDir(SequenceDirContext ctx) {
+		// TODO Auto-generated method stub
+		jplagParser.add(SEQUENCE_DIR, ctx.getStart());
+	}
+
+	@Override
+	public void exitSequenceDir(SequenceDirContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void exitSymbolLikeMnemonic(SymbolLikeMnemonicContext ctx) {
+	public void enterMacroInvocation(MacroInvocationContext ctx) {
+		// TODO Auto-generated method stub
+		jplagParser.add(MACRO_INVOCATION, ctx.getStart());
+	}
+
+	@Override
+	public void exitMacroInvocation(MacroInvocationContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}

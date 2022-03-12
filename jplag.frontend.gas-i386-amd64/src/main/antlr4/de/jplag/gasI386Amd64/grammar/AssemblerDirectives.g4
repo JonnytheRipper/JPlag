@@ -12,9 +12,9 @@ SECTION_DIRECTIVE :
   | P U S H S E C T I O N
   | P O P S E C T I O N
   | S U B S E C T I O N
-  ) ~[\n;]*? ;
+  ) ;
 
-CONDITION_DIRECTIVE :
+CONDITION_DIRECTIVE : // TODO: IF spans over multiple lines!!!
   '.'
   ( I F
   | E L S E
@@ -35,24 +35,26 @@ CONDITION_DIRECTIVE :
   | I F N O T D E F 
   | I F N E 
   | I F N E S
-  ) ~[\n;]*? ;
+  ) ;
 
-MACRO_DIRECTIVE :
-  '.'
-  ( M A C R O .*? (E X I T M | E N D M)
-  //|	E N D M
-  //| E X I T M
-  | A L T M A C R O
-  | N O A L T M A C R O
-  | P U R G E M
-  ) ~[\n;]*? ;
+//MACRO_DIRECTIVE :
+//  '.'
+//  ( M A C R O .*? (E X I T M | E N D M)
+//    {
+//      //System.out.println("CREATED macro: " + this.getText().split("\\s+")[1]);
+//      macros.add(getText().split("\\s+")[1]);
+//    }
+//  | A L T M A C R O
+//  | N O A L T M A C R O
+//  | P U R G E M
+//  ) ;
 
 BUNDLE_DIRECTIVE :
   '.'
   ( B U N D L E '_' A L I G N '_' M O D E
   | B U N D L E '_' L O C K
   | B U N D L E '_' U N L O C K
-  ) ~[\n;]*? ;
+  ) ;
 
 CFI_DIRECTIVE :
   '.'
@@ -82,23 +84,34 @@ CFI_DIRECTIVE :
   | C F I '_' W I N D O W '_' S A V E
   | C F I '_' E S C A P E
   | C F I '_' V A L '_' E N C O D E D '_' A D D R
-  ) ~[\n;]*? ;
-
-EQU_DIRECTIVE :
-  '.'
-  ( E Q U
-//  | S E T
-  | E Q U I V
-  | E Q V
-  ) ~[\n;]*? ;
+  ) ;
 
 ASSIGN_DIRECTIVE :
-  '.' S E T ~[\n;]*? ;
+  '.'
+  ( E Q U
+  | E Q U I V
+  | E Q V
+  | S E T
+  ) ;
+
+/*EQU_DIRECTIVE :
+  '.'
+  ( E Q U
+  | E Q U I V
+  | E Q V
+  | S E T
+  ) ;
+*/
+SEQUENCE_DIRECTIVE
+  : '.' (I R P | I R P C | R E P T) .*? SEQUENCE_DIRECTIVE+ .*? '.' E N D R
+  | '.' (I R P | I R P C | R E P T) .*? '.' E N D R
+  ;
 
 GENERIC_DIRECTIVE :
   '.'
   ( A B O R T
   | A L I G N
+  | A L L O W '_' I N D E X '_' R E G
   | A R C H
   | A S C I I
   | A S C I Z
@@ -138,8 +151,6 @@ GENERIC_DIRECTIVE :
   | I N T E L '_' S Y N T A X
   | I N T
   | I N T E R N A L
-  | I R P
-  | I R P C
   | L A R G E C O M M
   | L C O M M
   | L F L A G S
@@ -157,6 +168,7 @@ GENERIC_DIRECTIVE :
   | N O P S
   | O C T A
   | O F F S E T
+  | O P E R A N D '_' C H E C K
   | O R G
   | P '2' A L I G N
   | P R E V I O U S
@@ -165,7 +177,6 @@ GENERIC_DIRECTIVE :
   | P S I Z E
   | Q U A D
   | R E L O C
-  | R E P T
   | S B T T L
   | S C L
   | S H O R T
@@ -173,6 +184,7 @@ GENERIC_DIRECTIVE :
   | S I Z E
   | S K I P
   | S L E B '1' '2' '8'
+  | S L O N G
   | S P A C E
   | S T A B D
   | S T R I N G
@@ -195,7 +207,7 @@ GENERIC_DIRECTIVE :
   | Z E R O
   | [248] B Y T E
   | C O D E '1' '6'
-  | C O D E '1' '6' C C
+  | C O D E '1' '6' G C C
   | C O D E '3' '2'
   | C O D E '6' '4'
-  ) ~[\n;]*? ;
+  ) ;

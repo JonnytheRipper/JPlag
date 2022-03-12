@@ -26,8 +26,9 @@ public interface GasI386Amd64TokenConstants extends TokenConstants {
 	final static int MACRO_DIR = 19;
 	final static int BUNDLE_DIR = 20;
 	final static int CFI_DIR = 21;
-	final static int EQU_DIR = 22;
+	final static int SEQUENCE_DIR = 22;
 	final static int GENERIC_DIR = 23;
+	final static int MACRO_INVOCATION = 24;
 	
-	final static int NUM_DIFF_TOKENS = 24;
+	final static int NUM_DIFF_TOKENS = 25;
 }

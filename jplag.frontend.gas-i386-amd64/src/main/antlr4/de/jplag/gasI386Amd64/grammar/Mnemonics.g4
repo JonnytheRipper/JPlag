@@ -195,7 +195,7 @@ MOV_MNEMONIC :
   | V P C M O V
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
-STACK_MNEMONIC : // Maybe divide it into push and pop? 
+STACK_MNEMONIC :
   ( P U S H
   |	P U S H A
   | P U S H F
@@ -314,8 +314,10 @@ SYSCALL_MNEMONIC :
   ( S Y S C A L L
   | S Y S E N T E R
   | S Y S E X I T
+  | S Y S E X I T D
   | S Y S R E T
-  ) ;
+  | S Y S R E T D
+  ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
 JMP_MNEMONIC :
   ( J M P
@@ -667,10 +669,13 @@ CALL_MNEMONIC :
 
 RET_MNEMONIC :
   ( R E T
+  | R E T F
+  | R E T F D
   | L R E T
   | L E A V E
   | R E T F
   | I R E T
+  | I R E T D
   | U I R E T
   ) (B | W | L | Q | X | Y | Z)? ;
 
@@ -917,6 +922,8 @@ GENERIC_MNEMONIC :
   | A R P L
   | L A R
   | L G D T
+  | L G D T W
+  | L G D T D
   | L I D T
   | L L D T
   | L M S W
@@ -989,6 +996,7 @@ GENERIC_MNEMONIC :
   | F N S T E N V
   | F S T E N V
   | F L D E N V
+  | F L D E N V D
   | F N S A V E
   | F S A V E
   | F R S T O R
@@ -1091,6 +1099,9 @@ GENERIC_MNEMONIC :
   | C O M I S D
   | C V T P I '2' P D
   | C V T S I '2' S D
+  | C V T S I '2' S S
+  | C V T S I '2' S D D
+  | C V T S I '2' S S D
   | S H U F P D
   | U C O M I S D
   | U N P C K H P D

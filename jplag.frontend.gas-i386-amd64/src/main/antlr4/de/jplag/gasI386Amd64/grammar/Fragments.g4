@@ -1,4 +1,4 @@
-lexer grammar Fragments ;
+lexer grammar Fragments ; // TODO: Make sure everything is a fragment (or none?). Try to get rid of the dummy token at the end.
 
 ALPHA : [a-zA-Z] ;
 
