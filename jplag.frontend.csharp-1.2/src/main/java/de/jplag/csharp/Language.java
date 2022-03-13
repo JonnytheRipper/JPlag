@@ -2,76 +2,70 @@ package de.jplag.csharp;
 
 import java.io.File;
 
-import de.jplag.Program;
+import de.jplag.ErrorConsumer;
 import de.jplag.TokenList;
 
 public class Language implements de.jplag.Language {
-	private Parser parser;
+    private Parser parser;
 
-	public Language(Program program) {
-		this.parser = new Parser();
-		this.parser.setProgram(program);
+    public Language(ErrorConsumer program) {
+        this.parser = new Parser();
+        this.parser.setProgram(program);
 
-	}
+    }
 
-	@Override
+    @Override
     public String[] suffixes() {
-		String[] res = { ".cs", ".CS" };
-		return res;
-	}
+        return new String[] {".cs", ".CS"};
+    }
 
-	@Override
+    @Override
     public int errorCount() {
-		return this.parser.errorsCount();
-	}
+        return this.parser.errorsCount();
+    }
 
-	@Override
+    @Override
     public String getName() {
-		return "C# 1.2 AbstractParser";
-	}
+        return "C# 1.2 Parser";
+    }
 
-	@Override
+    @Override
     public String getShortName() {
-		return "c#-1.2";
-	}
+        return "c#-1.2";
+    }
 
-	@Override
+    @Override
     public int minimumTokenMatch() {
-		return 8;
-	}
+        return 8;
+    }
 
-	@Override
+    @Override
     public TokenList parse(File dir, String[] files) {
-		return this.parser.parse(dir, files);
-	}
+        return this.parser.parse(dir, files);
+    }
 
-	@Override
+    @Override
     public boolean hasErrors() {
-		return parser.hasErrors();
-	}
+        return parser.hasErrors();
+    }
 
-	@Override
+    @Override
     public boolean supportsColumns() {
-		return true;
-	}
+        return true;
+    }
 
-	@Override
+    @Override
     public boolean isPreformatted() {
-		return true;
-	}
+        return true;
+    }
 
-	@Override
+    @Override
     public boolean usesIndex() {
-		return false;
-	}
+        return false;
+    }
 
-	@Override
+    @Override
     public int numberOfTokens() {
-		return CSharpTokenConstants.NUM_DIFF_TOKENS;
-	}
-
-	@Override
-    public String type2string(int type) {
-		return CSharpToken.type2string(type);
-	}
+        return CSharpTokenConstants.NUM_DIFF_TOKENS;
+    }
 }
