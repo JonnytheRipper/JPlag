@@ -309,13 +309,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	@Override
 	public void enterConditionDir(ConditionDirContext ctx) {
 		// TODO Auto-generated method stub
-		jplagParser.add(CONDITION_DIR_BEGIN, ctx.getStart());
+		// Handled by enterConditionDirective()
 	}
 
 	@Override
 	public void exitConditionDir(ConditionDirContext ctx) {
 		// TODO Auto-generated method stub
-		jplagParser.add(CONDITION_DIR_END, ctx.getStop());
+		// Handled by exitConditionDirective()
 	}
 
 	@Override
@@ -393,13 +393,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	@Override
 	public void enterSequenceDir(SequenceDirContext ctx) {
 		// TODO Auto-generated method stub
-		jplagParser.add(SEQUENCE_DIR_BEGIN, ctx.getStart());
+		// Handled by enterSequenceDirective()
 	}
 
 	@Override
 	public void exitSequenceDir(SequenceDirContext ctx) {
 		// TODO Auto-generated method stub
-		jplagParser.add(SEQUENCE_DIR_END, ctx.getStop());
+		// Handled by exitSequenceDirective()
 	}
 
 	@Override
@@ -417,24 +417,24 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	@Override
 	public void enterConditionDirective(ConditionDirectiveContext ctx) {
 		// TODO Auto-generated method stub
-		// Handled by enterConditionDir()
+		jplagParser.add(CONDITION_DIR_BEGIN, ctx.getStart());
 	}
 
 	@Override
 	public void exitConditionDirective(ConditionDirectiveContext ctx) {
 		// TODO Auto-generated method stub
-		
+		jplagParser.add(CONDITION_DIR_END, ctx.getStop());
 	}
 
 	@Override
 	public void enterSequenceDirective(SequenceDirectiveContext ctx) {
 		// TODO Auto-generated method stub
-		// Handled by enterSequenceDir()
+		jplagParser.add(SEQUENCE_DIR_BEGIN, ctx.getStart());
 	}
 
 	@Override
 	public void exitSequenceDirective(SequenceDirectiveContext ctx) {
 		// TODO Auto-generated method stub
-		
+		jplagParser.add(SEQUENCE_DIR_END, ctx.getStop());
 	}
 }

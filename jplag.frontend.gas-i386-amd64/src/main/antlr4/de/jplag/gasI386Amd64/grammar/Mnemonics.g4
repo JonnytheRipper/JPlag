@@ -817,9 +817,6 @@ PREFIX_MNEMONIC :
   | X R E L E A S E
   ) ;
 
-//TODO: LOAD_MNEMONIC :
-// e.g. LODS
-
 GENERIC_MNEMONIC :
   ( I N
   | O U T
