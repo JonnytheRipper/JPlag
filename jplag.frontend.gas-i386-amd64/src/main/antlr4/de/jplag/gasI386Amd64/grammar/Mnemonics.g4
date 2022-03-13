@@ -197,7 +197,7 @@ MOV_MNEMONIC :
 
 STACK_MNEMONIC :
   ( P U S H
-  |	P U S H A
+  | P U S H A
   | P U S H F
   | P O P
   | P O P A

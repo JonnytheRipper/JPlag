@@ -6,7 +6,7 @@ public interface GasI386Amd64TokenConstants extends TokenConstants {
 	final static int FILE_END = 0;
 	final static int SEPARATOR_TOKEN = 1;
 	
-	final static int PROGRAM = 2;
+	final static int MACRO_INVOCATION = 2;
 	final static int LABEL = 3;
 	final static int ASSIGNMENT = 4;
 	final static int MOV_MNE = 5;
@@ -22,13 +22,14 @@ public interface GasI386Amd64TokenConstants extends TokenConstants {
 	final static int BIT_MNE = 15;
 	final static int GENERIC_MNE = 16;
 	final static int SECTION_DIR = 17;
-	final static int CONDITION_DIR = 18;
-	final static int MACRO_DIR = 19;
-	final static int BUNDLE_DIR = 20;
-	final static int CFI_DIR = 21;
-	final static int SEQUENCE_DIR = 22;
-	final static int GENERIC_DIR = 23;
-	final static int MACRO_INVOCATION = 24;
+	final static int CONDITION_DIR_BEGIN = 18;
+	final static int CONDITION_DIR_END = 19;
+	final static int MACRO_DIR = 20;
+	final static int BUNDLE_DIR = 21;
+	final static int CFI_DIR = 22;
+	final static int SEQUENCE_DIR_BEGIN = 23;
+	final static int SEQUENCE_DIR_END = 24;
+	final static int GENERIC_DIR = 25;
 	
-	final static int NUM_DIFF_TOKENS = 25;
+	final static int NUM_DIFF_TOKENS = 26;
 }

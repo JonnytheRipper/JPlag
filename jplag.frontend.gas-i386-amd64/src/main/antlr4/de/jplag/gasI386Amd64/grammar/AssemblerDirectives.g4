@@ -5,7 +5,7 @@ import Fragments ;
 SECTION_DIRECTIVE :
   '.'
   ( S E C T I O N
-  |	B S S
+  | B S S
   | L B S S
   | D A T A
   | T E X T
@@ -14,12 +14,9 @@ SECTION_DIRECTIVE :
   | S U B S E C T I O N
   ) ;
 
-CONDITION_DIRECTIVE : // TODO: IF spans over multiple lines!!!
+CONDITION_DIRECTIVE_IF :
   '.'
   ( I F
-  | E L S E
-  | E L S E I F
-  | E N D I F
   | I F D E F 
   | I F B 
   | I F C 
@@ -37,17 +34,15 @@ CONDITION_DIRECTIVE : // TODO: IF spans over multiple lines!!!
   | I F N E S
   ) ;
 
-//MACRO_DIRECTIVE :
-//  '.'
-//  ( M A C R O .*? (E X I T M | E N D M)
-//    {
-//      //System.out.println("CREATED macro: " + this.getText().split("\\s+")[1]);
-//      macros.add(getText().split("\\s+")[1]);
-//    }
-//  | A L T M A C R O
-//  | N O A L T M A C R O
-//  | P U R G E M
-//  ) ;
+CONDITION_DIRECTIVE_ELSE :
+  '.'
+  ( E L S E
+  | E L S E I F
+  ) ;
+  
+CONDITION_DIRECTIVE_END
+  : '.' E N D I F
+  ;
 
 BUNDLE_DIRECTIVE :
   '.'
@@ -94,17 +89,15 @@ ASSIGN_DIRECTIVE :
   | S E T
   ) ;
 
-/*EQU_DIRECTIVE :
+SEQUENCE_DIRECTIVE_START :
   '.'
-  ( E Q U
-  | E Q U I V
-  | E Q V
-  | S E T
+  ( I R P
+  | I R P C
+  | R E P T
   ) ;
-*/
-SEQUENCE_DIRECTIVE
-  : '.' (I R P | I R P C | R E P T) .*? SEQUENCE_DIRECTIVE+ .*? '.' E N D R
-  | '.' (I R P | I R P C | R E P T) .*? '.' E N D R
+
+SEQUENCE_DIRECTIVE_END
+  : '.' E N D R
   ;
 
 GENERIC_DIRECTIVE :
@@ -126,6 +119,7 @@ GENERIC_DIRECTIVE :
   | D E F
   | D E S C
   | D I M
+  | D I S A L L O W '_' I N D E X '_' R E G
   | D O U B L E
   | E J E C T
   | E N D
@@ -179,6 +173,7 @@ GENERIC_DIRECTIVE :
   | R E L O C
   | S B T T L
   | S C L
+  | S E C R E L '3' '2'
   | S H O R T
   | S I N G L E
   | S I Z E
@@ -186,6 +181,7 @@ GENERIC_DIRECTIVE :
   | S L E B '1' '2' '8'
   | S L O N G
   | S P A C E
+  | S S E '_' C H E C K
   | S T A B D
   | S T R I N G
   | S T R U C T

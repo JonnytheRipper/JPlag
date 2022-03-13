@@ -15,22 +15,22 @@ import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CfiDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ConditionDirContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ConditionDirectiveContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.InstructionContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.IntegerContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.JmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.LabelContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.LogicMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MacroDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MacroInvocationContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MovMneContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.NumberContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.PrefixMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ProgramContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RetMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SectionDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SequenceDirContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SequenceDirectiveContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StackMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StatementContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolContext;
@@ -92,18 +92,6 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	}
 
 	@Override
-	public void enterNumber(NumberContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitNumber(NumberContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void enterLabel(LabelContext ctx) {
 		// TODO Auto-generated method stub
 		jplagParser.add(LABEL, ctx.getStart());
@@ -111,18 +99,6 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 
 	@Override
 	public void exitLabel(LabelContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void enterInteger(IntegerContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void exitInteger(IntegerContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -165,7 +141,7 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	@Override
 	public void enterStackMne(StackMneContext ctx) {
 		// TODO Auto-generated method stub
-		
+		jplagParser.add(STACK_MNE, ctx.getStart());
 	}
 
 	@Override
@@ -333,13 +309,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	@Override
 	public void enterConditionDir(ConditionDirContext ctx) {
 		// TODO Auto-generated method stub
-		jplagParser.add(CONDITION_DIR, ctx.getStart());
+		jplagParser.add(CONDITION_DIR_BEGIN, ctx.getStart());
 	}
 
 	@Override
 	public void exitConditionDir(ConditionDirContext ctx) {
 		// TODO Auto-generated method stub
-		
+		jplagParser.add(CONDITION_DIR_END, ctx.getStop());
 	}
 
 	@Override
@@ -417,13 +393,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 	@Override
 	public void enterSequenceDir(SequenceDirContext ctx) {
 		// TODO Auto-generated method stub
-		jplagParser.add(SEQUENCE_DIR, ctx.getStart());
+		jplagParser.add(SEQUENCE_DIR_BEGIN, ctx.getStart());
 	}
 
 	@Override
 	public void exitSequenceDir(SequenceDirContext ctx) {
 		// TODO Auto-generated method stub
-		
+		jplagParser.add(SEQUENCE_DIR_END, ctx.getStop());
 	}
 
 	@Override
@@ -434,6 +410,30 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
 
 	@Override
 	public void exitMacroInvocation(MacroInvocationContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enterConditionDirective(ConditionDirectiveContext ctx) {
+		// TODO Auto-generated method stub
+		// Handled by enterConditionDir()
+	}
+
+	@Override
+	public void exitConditionDirective(ConditionDirectiveContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enterSequenceDirective(SequenceDirectiveContext ctx) {
+		// TODO Auto-generated method stub
+		// Handled by enterSequenceDir()
+	}
+
+	@Override
+	public void exitSequenceDirective(SequenceDirectiveContext ctx) {
 		// TODO Auto-generated method stub
 		
 	}
