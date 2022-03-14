@@ -27,7 +27,7 @@ public class Parser extends AbstractParser implements GasI386Amd64TokenConstants
 		tokenList = new TokenList();
 		
 		for (int i = 0; i < files.length; i++) {
-			getProgram().print(null, "Parsing file " + files[i] + "\n");
+			getErrorConsumer().print(null, "Parsing file " + files[i] + "\n");
 			if (!parseFile(dir, files[i]))
 				errors++;
 			tokenList.addToken(new GasI386Amd64Token(FILE_END, files[i], -1, -1, -1));
@@ -66,7 +66,7 @@ public class Parser extends AbstractParser implements GasI386Amd64TokenConstants
 			fileInputStream.close();
 
 		} catch (IOException e) {
-			getProgram().addError("Parsing Error in '" + file + "':\n" + e.getMessage() + "\n");
+			getErrorConsumer().addError("Parsing Error in '" + file + "':\n" + e.getMessage() + "\n");
 			return false;
 		}
 		return true;

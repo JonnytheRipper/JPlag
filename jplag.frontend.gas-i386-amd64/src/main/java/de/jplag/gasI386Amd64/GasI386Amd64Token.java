@@ -1,10 +1,8 @@
 package de.jplag.gasI386Amd64;
 
 import de.jplag.Token;
-import de.jplag.TokenConstants;
 
 public class GasI386Amd64Token extends Token implements GasI386Amd64TokenConstants {
-	private static final long serialVersionUID = 7622542695302043164L;
 	private int column;
 	private int length;
 	private int line;
@@ -43,11 +41,13 @@ public class GasI386Amd64Token extends Token implements GasI386Amd64TokenConstan
 		this.length = length;
 	}
 	
-	public static String type2String(int type) {
+	@Override
+	protected String type2string() {
 		switch(type) {
-		case TokenConstants.FILE_END:
+		case GasI386Amd64TokenConstants.FILE_END:
 			return "***EOF***";
 		default:
+			System.err.println("*UNKNOWN: " + type);
 			return "UNKNOWN: \"" + type + "\"";
 		}
 	}

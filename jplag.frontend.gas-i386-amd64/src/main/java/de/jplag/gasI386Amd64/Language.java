@@ -2,13 +2,13 @@ package de.jplag.gasI386Amd64;
 
 import java.io.File;
 
-import de.jplag.Program;
+import de.jplag.ErrorConsumer;
 import de.jplag.TokenList;
 
 public class Language implements de.jplag.Language {
 	private Parser parser;
 	
-	public Language(Program program) {
+	public Language(ErrorConsumer program) {
 		this.parser = new Parser();
 		this.parser.setProgram(program);
 	}
@@ -68,10 +68,4 @@ public class Language implements de.jplag.Language {
 	public int numberOfTokens() {
 		return GasI386Amd64TokenConstants.NUM_DIFF_TOKENS;
 	}
-
-	@Override
-	public String type2string(int type) {
-		return GasI386Amd64Token.type2String(type);
-	}
-	
 }
