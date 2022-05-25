@@ -2,6 +2,7 @@ lexer grammar AssemblerDirectives ;
 
 import Fragments ;
 
+fragment
 SECTION_DIRECTIVE :
   '.'
   ( S E C T I O N
@@ -14,36 +15,40 @@ SECTION_DIRECTIVE :
   | S U B S E C T I O N
   ) ;
 
+fragment
 CONDITION_DIRECTIVE_IF :
   '.'
   ( I F
-  | I F D E F 
-  | I F B 
-  | I F C 
-  | I F E Q 
-  | I F E Q S 
-  | I F G E 
-  | I F G T 
-  | I F L E 
-  | I F L T 
-  | I F N B   
-  | I F N C 
-  | I F N D E F 
-  | I F N O T D E F 
-  | I F N E 
+  | I F D E F
+  | I F B
+  | I F C
+  | I F E Q
+  | I F E Q S
+  | I F G E
+  | I F G T
+  | I F L E
+  | I F L T
+  | I F N B
+  | I F N C
+  | I F N D E F
+  | I F N O T D E F
+  | I F N E
   | I F N E S
   ) ;
 
+fragment
 CONDITION_DIRECTIVE_ELSE :
   '.'
   ( E L S E
   | E L S E I F
   ) ;
-  
+
+fragment
 CONDITION_DIRECTIVE_END
   : '.' E N D I F
   ;
 
+fragment
 BUNDLE_DIRECTIVE :
   '.'
   ( B U N D L E '_' A L I G N '_' M O D E
@@ -51,6 +56,7 @@ BUNDLE_DIRECTIVE :
   | B U N D L E '_' U N L O C K
   ) ;
 
+fragment
 CFI_DIRECTIVE :
   '.'
   ( C F I '_' S E C T I O N S
@@ -81,14 +87,7 @@ CFI_DIRECTIVE :
   | C F I '_' V A L '_' E N C O D E D '_' A D D R
   ) ;
 
-ASSIGN_DIRECTIVE :
-  '.'
-  ( E Q U
-  | E Q U I V
-  | E Q V
-  | S E T
-  ) ;
-
+fragment
 SEQUENCE_DIRECTIVE_START :
   '.'
   ( I R P
@@ -96,10 +95,12 @@ SEQUENCE_DIRECTIVE_START :
   | R E P T
   ) ;
 
+fragment
 SEQUENCE_DIRECTIVE_END
   : '.' E N D R
   ;
 
+fragment
 GENERIC_DIRECTIVE :
   '.'
   ( A B O R T

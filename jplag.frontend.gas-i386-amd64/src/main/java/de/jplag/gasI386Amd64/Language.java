@@ -31,7 +31,7 @@ public class Language implements de.jplag.Language {
 
     @Override
     public int minimumTokenMatch() {
-        return 7;
+        return 12;
     }
 
     @Override

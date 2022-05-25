@@ -30,6 +30,10 @@ public interface GasI386Amd64TokenConstants extends TokenConstants {
     final static int SEQUENCE_DIR_BEGIN = 23;
     final static int SEQUENCE_DIR_END = 24;
     final static int GENERIC_DIR = 25;
+    final static int MEM_REFERENCE_OPERAND = 26;
+    final static int REGISTER_OPERAND = 27;
+    final static int IMMEDIATE_OPERAND = 28;
+    final static int EVEX_OPERAND = 29;
 
-    final static int NUM_DIFF_TOKENS = 26;
+    final static int NUM_DIFF_TOKENS = 30;
 }

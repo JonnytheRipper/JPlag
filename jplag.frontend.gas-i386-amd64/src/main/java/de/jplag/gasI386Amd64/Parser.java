@@ -44,7 +44,6 @@ public class Parser extends AbstractParser implements GasI386Amd64TokenConstants
             fileInputStream = new BufferedInputStream(new FileInputStream(new File(dir, file)));
             currentFile = file;
             input = CharStreams.fromStream(fileInputStream);
-            // System.out.println("Input the lexer is using: " + input);
 
             // create a lexer that feeds off of input CharStream
             GasI386Amd64Lexer lexer = new GasI386Amd64Lexer(input);

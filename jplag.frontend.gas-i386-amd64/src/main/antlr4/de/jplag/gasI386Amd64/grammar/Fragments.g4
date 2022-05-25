@@ -90,10 +90,6 @@ fragment X
 fragment Y
   : ('y' | 'Y') ;
 
-Z
+fragment Z
   : ('z' | 'Z') ;
-
-// Z is the dummy token. It can be made a fragment when the code gets generated
-// with antlr4 version 4.7.1 or higher.
-// See https://github.com/antlr/antlr4/pull/2007 for details' ;
-// Could also be mitigated by putting the whole grammar into just one file.
+  

@@ -195,6 +195,7 @@ MOV_MNEMONIC :
   | V P C M O V
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 STACK_MNEMONIC :
   ( P U S H
   | P U S H A
@@ -204,6 +205,7 @@ STACK_MNEMONIC :
   | P O P F
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 XCHG_MNEMONIC :
   ( X C H G
   | C M P X C H G
@@ -211,6 +213,7 @@ XCHG_MNEMONIC :
   | C M P X C H G '1' '6' B
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 ARITHMETIC_MNEMONIC :
   ( A D D
   | A D C
@@ -310,6 +313,7 @@ ARITHMETIC_MNEMONIC :
   | M U L X
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 SYSCALL_MNEMONIC :
   ( S Y S C A L L
   | S Y S E N T E R
@@ -319,6 +323,7 @@ SYSCALL_MNEMONIC :
   | S Y S R E T D
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 JMP_MNEMONIC :
   ( J M P
   | L J M P
@@ -357,6 +362,7 @@ JMP_MNEMONIC :
   | J R C X Z
   ) (B | W | L | Q | X | Y | Z)? ('.' D DIGIT+)? ;
 
+fragment
 CMP_MNEMONIC :
   ( C M P
   | C M P S
@@ -662,11 +668,13 @@ CMP_MNEMONIC :
   | V P C M P N L E U W
   ) (B | W | L | Q | X | Y | Z)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 CALL_MNEMONIC :
   ( C A L L
   | L C A L L
   ) (B | W | L | Q | X | Y | Z)? ;
 
+fragment
 RET_MNEMONIC :
   ( R E T
   | R E T F
@@ -679,6 +687,7 @@ RET_MNEMONIC :
   | U I R E T
   ) (B | W | L | Q | X | Y | Z)? ;
 
+fragment
 LOGIC_MNEMONIC :
   ( A N D
   | O R
@@ -729,6 +738,7 @@ LOGIC_MNEMONIC :
   | V P T E S T N M Q
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 BIT_MNEMONIC :
   ( T E S T
   | R O L
@@ -751,6 +761,7 @@ BIT_MNEMONIC :
   | V P R O R Q
   ) (B | W | L | Q | X | Y | Z | S | T)? ('.' S)? ('.' D DIGIT+)? ;
 
+fragment
 PREFIX_MNEMONIC :
   ( A D D R '1' '6'
   | A D D R '3' '2'
@@ -807,16 +818,11 @@ PREFIX_MNEMONIC :
   | '{' E V E X '}'
   | '{' R E X '}'
   | '{' N O O P T I M I Z E '}'
-  | C S
-  | D S
-  | E S
-  | F S
-  | G S
-  | S S
   | X A C Q U I R E
   | X R E L E A S E
   ) ;
 
+fragment
 GENERIC_MNEMONIC :
   ( I N
   | O U T

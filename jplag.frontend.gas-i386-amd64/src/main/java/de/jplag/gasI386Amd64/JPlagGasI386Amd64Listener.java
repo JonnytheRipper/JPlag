@@ -5,34 +5,48 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Listener;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ArgumentContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ArithmeticMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssemblerDirectiveContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssignDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.AssignmentContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.BaseContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.BitMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.BundleDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CfiDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.CmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ConditionDirContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ConditionDirectiveContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.DisplacementContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.EvexOperandContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.GenericMneContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ImmediateContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ImmediateOperandContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.IndexContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.InstructionContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.IntegerContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.JmpMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.LabelContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.LogicMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MacroDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MacroInvocationContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MemReferenceContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MemReferenceOperandContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.MovMneContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.NumberContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.PrefixMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ProgramContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RegisterContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RegisterOperandContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.RetMneContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ScaleContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SectionContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SectionDirContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SequenceDirContext;
-import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SequenceDirectiveContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StackMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.StatementContext;
+import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SubExprContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SymbolContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.SyscallMneContext;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.XchgMneContext;
@@ -309,13 +323,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
     @Override
     public void enterConditionDir(ConditionDirContext ctx) {
         // TODO Auto-generated method stub
-        // Handled by enterConditionDirective()
+        jplagParser.add(CONDITION_DIR_BEGIN, ctx.getStart());
     }
 
     @Override
     public void exitConditionDir(ConditionDirContext ctx) {
         // TODO Auto-generated method stub
-        // Handled by exitConditionDirective()
+        jplagParser.add(CONDITION_DIR_END, ctx.getStop());
     }
 
     @Override
@@ -367,18 +381,6 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
     }
 
     @Override
-    public void enterAssignDir(AssignDirContext ctx) {
-        // TODO Auto-generated method stub
-        jplagParser.add(ASSIGNMENT, ctx.getStart());
-    }
-
-    @Override
-    public void exitAssignDir(AssignDirContext ctx) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void enterPrefixMne(PrefixMneContext ctx) {
         // TODO Auto-generated method stub
 
@@ -393,13 +395,13 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
     @Override
     public void enterSequenceDir(SequenceDirContext ctx) {
         // TODO Auto-generated method stub
-        // Handled by enterSequenceDirective()
+        jplagParser.add(SEQUENCE_DIR_BEGIN, ctx.getStart());
     }
 
     @Override
     public void exitSequenceDir(SequenceDirContext ctx) {
         // TODO Auto-generated method stub
-        // Handled by exitSequenceDirective()
+        jplagParser.add(SEQUENCE_DIR_END, ctx.getStop());
     }
 
     @Override
@@ -415,26 +417,198 @@ public class JPlagGasI386Amd64Listener implements GasI386Amd64Listener, GasI386A
     }
 
     @Override
-    public void enterConditionDirective(ConditionDirectiveContext ctx) {
+    public void enterArgument(ArgumentContext ctx) {
         // TODO Auto-generated method stub
-        jplagParser.add(CONDITION_DIR_BEGIN, ctx.getStart());
+
     }
 
     @Override
-    public void exitConditionDirective(ConditionDirectiveContext ctx) {
+    public void exitArgument(ArgumentContext ctx) {
         // TODO Auto-generated method stub
-        jplagParser.add(CONDITION_DIR_END, ctx.getStop());
+
     }
 
     @Override
-    public void enterSequenceDirective(SequenceDirectiveContext ctx) {
+    public void enterInteger(IntegerContext ctx) {
         // TODO Auto-generated method stub
-        jplagParser.add(SEQUENCE_DIR_BEGIN, ctx.getStart());
+
     }
 
     @Override
-    public void exitSequenceDirective(SequenceDirectiveContext ctx) {
+    public void exitInteger(IntegerContext ctx) {
         // TODO Auto-generated method stub
-        jplagParser.add(SEQUENCE_DIR_END, ctx.getStop());
+
+    }
+
+    @Override
+    public void enterSubExpr(SubExprContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitSubExpr(SubExprContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterNumber(NumberContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitNumber(NumberContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterExpr(ExprContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitExpr(ExprContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterMemReferenceOperand(MemReferenceOperandContext ctx) {
+        // TODO Auto-generated method stub
+        jplagParser.add(MEM_REFERENCE_OPERAND, ctx.getStart());
+    }
+
+    @Override
+    public void exitMemReferenceOperand(MemReferenceOperandContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void enterRegisterOperand(RegisterOperandContext ctx) {
+        // TODO Auto-generated method stub
+        jplagParser.add(REGISTER_OPERAND, ctx.getStart());
+    }
+
+    @Override
+    public void exitRegisterOperand(RegisterOperandContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void enterImmediateOperand(ImmediateOperandContext ctx) {
+        // TODO Auto-generated method stub
+        jplagParser.add(IMMEDIATE_OPERAND, ctx.getStart());
+    }
+
+    @Override
+    public void exitImmediateOperand(ImmediateOperandContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void enterEvexOperand(EvexOperandContext ctx) {
+        // TODO Auto-generated method stub
+        jplagParser.add(EVEX_OPERAND, ctx.getStart());
+    }
+
+    @Override
+    public void exitEvexOperand(EvexOperandContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterMemReference(MemReferenceContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void exitMemReference(MemReferenceContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterImmediate(ImmediateContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void exitImmediate(ImmediateContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void enterRegister(RegisterContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void exitRegister(RegisterContext ctx) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void enterScale(ScaleContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitScale(ScaleContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterSection(SectionContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitSection(SectionContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterDisplacement(DisplacementContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitDisplacement(DisplacementContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterIndex(IndexContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitIndex(IndexContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void enterBase(BaseContext ctx) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void exitBase(BaseContext ctx) {
+        // TODO Auto-generated method stub
+
     }
 }
