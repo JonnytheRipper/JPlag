@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.jplag.clustering.ClusteringFactory;
 import de.jplag.exceptions.ExitException;
 import de.jplag.exceptions.SubmissionException;
@@ -26,6 +29,8 @@ import de.jplag.strategy.ParallelComparisonStrategy;
  * This class coordinates the whole errorConsumer flow.
  */
 public class JPlag {
+    private static final Logger logger = LoggerFactory.getLogger("JPlag");
+
     private final JPlagOptions options;
 
     private final Language language;
@@ -37,9 +42,8 @@ public class JPlag {
     /**
      * Creates and initializes a JPlag instance, parameterized by a set of options.
      * @param options determines the parameterization.
-     * @throws ExitException if the initialization fails.
      */
-    public JPlag(JPlagOptions options) throws ExitException {
+    public JPlag(JPlagOptions options) {
         this.options = options;
         errorCollector = new ErrorCollector(options);
         coreAlgorithm = new GreedyStringTiling(options);
@@ -51,9 +55,9 @@ public class JPlag {
 
     /**
      * If an exclusion file is given, it is read in and all strings are saved in the set "excluded".
-     * @param exclusionFileName
+     * @param exclusionFileName the file name or path
      */
-    Set<String> readExclusionFile(final String exclusionFileName) {
+    private Set<String> readExclusionFile(final String exclusionFileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(exclusionFileName, JPlagOptions.CHARSET))) {
             final var excludedFileNames = reader.lines().collect(Collectors.toSet());
             if (options.getVerbosity() == LONG) {
@@ -64,7 +68,7 @@ public class JPlag {
             }
             return excludedFileNames;
         } catch (IOException e) {
-            System.out.println("Could not read exclusion file: " + e.getMessage());
+            logger.error("Could not read exclusion file: " + e.getMessage(), e);
             return Collections.emptySet();
         }
     }
@@ -98,14 +102,10 @@ public class JPlag {
     }
 
     private ComparisonStrategy initializeComparisonStrategy(final ComparisonMode comparisonMode) {
-        switch (comparisonMode) {
-            case NORMAL:
-                return new NormalComparisonStrategy(options, coreAlgorithm);
-            case PARALLEL:
-                return new ParallelComparisonStrategy(options, coreAlgorithm);
-            default:
-                throw new AssertionError("Unknown comparison strategy found.");
-        }
+        return switch (comparisonMode) {
+            case NORMAL -> new NormalComparisonStrategy(options, coreAlgorithm);
+            case PARALLEL -> new ParallelComparisonStrategy(options, coreAlgorithm);
+        };
     }
 
     private Language initializeLanguage() {
@@ -119,7 +119,7 @@ public class JPlag {
 
             this.options.setLanguage(language);
             this.options.setLanguageDefaults(language);
-            System.out.println("Initialized language " + language.getName());
+            logger.info("Initialized language " + language.getName());
             return language;
         } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | InstantiationException | IllegalAccessException
                 | IllegalArgumentException | InvocationTargetException e) {

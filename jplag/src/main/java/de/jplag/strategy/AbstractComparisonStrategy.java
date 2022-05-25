@@ -1,6 +1,11 @@
 package de.jplag.strategy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jplag.GreedyStringTiling;
 import de.jplag.JPlagComparison;
@@ -10,7 +15,9 @@ import de.jplag.options.JPlagOptions;
 
 public abstract class AbstractComparisonStrategy implements ComparisonStrategy {
 
-    private GreedyStringTiling greedyStringTiling;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final GreedyStringTiling greedyStringTiling;
 
     protected JPlagOptions options;
 
@@ -40,11 +47,37 @@ public abstract class AbstractComparisonStrategy implements ComparisonStrategy {
      */
     protected Optional<JPlagComparison> compareSubmissions(Submission first, Submission second, boolean withBaseCode) {
         JPlagComparison comparison = greedyStringTiling.compare(first, second);
-        System.out.println("Comparing " + first.getName() + "-" + second.getName() + ": " + comparison.similarity());
+        logger.info("Comparing " + first.getName() + "-" + second.getName() + ": " + comparison.similarity());
 
         if (options.getSimilarityMetric().isAboveThreshold(comparison, options.getSimilarityThreshold())) {
             return Optional.of(comparison);
         }
         return Optional.empty();
+    }
+
+    /**
+     * @return a list of all submission tuples to be processed.
+     */
+    protected static List<SubmissionTuple> buildComparisonTuples(List<Submission> submissions) {
+        List<SubmissionTuple> tuples = new ArrayList<>();
+
+        for (int i = 0; i < (submissions.size() - 1); i++) {
+            Submission first = submissions.get(i);
+            if (first.getTokenList() == null) {
+                continue;
+            }
+
+            for (int j = (i + 1); j < submissions.size(); j++) {
+                Submission second = submissions.get(j);
+                if (second.getTokenList() == null) {
+                    continue;
+                }
+
+                if (first.isNew() || second.isNew()) {
+                    tuples.add(new SubmissionTuple(first, second));
+                }
+            }
+        }
+        return tuples;
     }
 }

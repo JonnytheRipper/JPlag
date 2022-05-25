@@ -14,22 +14,26 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.random.HaltonSequenceGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Maximizes a function using bayesian optimization.
  */
 public class BayesianOptimization {
 
+    private static final Logger logger = LoggerFactory.getLogger(BayesianOptimization.class);
+
     private static final int STOP_AFTER_CONSECUTIVE_RANDOM_PICKS = 3;
     private static final int MAX_NON_ZERO_ACQ_FN_EVALS_PER_ITERATION = 50;
     private static final int MAXIMUM_ACQ_FN_EVALS_PER_ITERATION = 1000;
 
-    private RealVector minima;
-    private RealVector maxima;
-    private int maxEvaluations;
-    private int initialPoints;
-    private double noise;
-    private RealVector lengthScale;
+    private final RealVector minima;
+    private final RealVector maxima;
+    private final int maxEvaluations;
+    private final int initialPoints;
+    private final double noise;
+    private final RealVector lengthScale;
     private boolean debug = false;
 
     /**
@@ -55,6 +59,7 @@ public class BayesianOptimization {
         this.lengthScale = lengthScale;
     }
 
+    // TODO This method is not used
     public void setDebugLogging(boolean debug) {
         this.debug = debug;
     }
@@ -155,8 +160,9 @@ public class BayesianOptimization {
                 // GPR
                 GaussianProcess gpr = fit(testedCoordinates, observations);
                 if (debug) {
-                    System.out.println(gpr.toString(minima, maxima, 100, 25, 0));
+                    logger.debug(gpr.toString(minima, maxima, 100, 25, 0));
                 }
+                // TODO Check that best is not null here
                 coordinates = maxAcq(gpr, best.score, poiSampler, zeroAcquisitionsCounter);
                 testedCoordinates.add(coordinates);
             }
@@ -175,8 +181,8 @@ public class BayesianOptimization {
 
     public static final class OptimizationResult<T> {
 
-        private double score;
-        private T value;
+        private final double score;
+        private final T value;
         private RealVector params;
 
         public OptimizationResult(double score, T value) {

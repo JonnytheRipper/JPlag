@@ -1,8 +1,14 @@
 package de.jplag.java;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.jplag.Token;
+import de.jplag.TokenConstants;
 
 public class JavaToken extends Token implements JavaTokenConstants {
+
+    private final Logger logger = LoggerFactory.getLogger(JavaToken.class);
 
     public JavaToken(int type, String file, int line, int column, int length) {
         super(type, file, line, column, length);
@@ -11,9 +17,9 @@ public class JavaToken extends Token implements JavaTokenConstants {
     @Override
     protected String type2string() {
         switch (type) {
-            case JavaTokenConstants.FILE_END:
+            case TokenConstants.FILE_END:
                 return "EOF";
-            case JavaTokenConstants.SEPARATOR_TOKEN:
+            case TokenConstants.SEPARATOR_TOKEN:
                 return "METHOD_SEPARATOR";
             case J_PACKAGE:
                 return "PACKAGE";
@@ -141,12 +147,19 @@ public class JavaToken extends Token implements JavaTokenConstants {
                 return "PROVIDES";
             case J_REQUIRES:
                 return "REQUIRES";
-
             case J_TRY_WITH_RESOURCE:
                 return "TRY_RES";
+            case J_YIELD:
+                return "YIELD";
+            case J_DEFAULT:
+                return "DEFAULT";
+            case J_RECORD_BEGIN:
+                return "RECORD{";
+            case J_RECORD_END:
+                return "}RECORD";
 
             default:
-                System.err.println("UNKNOWN: " + type);
+                logger.error("UNKNOWN: " + type);
                 return "<UNKNOWN" + type + ">";
         }
     }

@@ -25,7 +25,7 @@ public class GreedyStringTiling {
     }
 
     /**
-     * Creating hashes in linear time. The hash-code will be written in every Token for the next &lt;hash_length&gt; token
+     * Creating hashes in linear time. The hash-code will be written in every Token for the next &lt;hashLength&gt; token
      * (includes the Token itself).
      * @param tokenList contains the tokens.
      * @param hashLength is the hash length (condition: 1 &lt; hashLength &lt; 26)
@@ -86,7 +86,7 @@ public class GreedyStringTiling {
                 }
             }
         }
-        tokenList.hash_length = hashLength;
+        tokenList.hashLength = hashLength;
     }
 
     public final JPlagComparison compare(Submission firstSubmission, Submission secondSubmission) {
@@ -97,7 +97,7 @@ public class GreedyStringTiling {
         return swapAndCompare(firstSubmission, secondSubmission, true);
     }
 
-    private final JPlagComparison swapAndCompare(Submission firstSubmission, Submission secondSubmission, boolean isBaseCodeComparison) {
+    private JPlagComparison swapAndCompare(Submission firstSubmission, Submission secondSubmission, boolean isBaseCodeComparison) {
         Submission smallerSubmission, largerSubmission;
         if (firstSubmission.getTokenList().size() > secondSubmission.getTokenList().size()) {
             smallerSubmission = secondSubmission;
@@ -122,7 +122,7 @@ public class GreedyStringTiling {
      * @param isBaseCodeComparison specifies whether one of the submissions is the base code.
      * @return the comparison results.
      */
-    private final JPlagComparison compare(Submission firstSubmission, Submission secondSubmission, boolean isBaseCodeComparison) {
+    private JPlagComparison compare(Submission firstSubmission, Submission secondSubmission, boolean isBaseCodeComparison) {
         // first and second refer to the list of tokens of the first and second submission:
         TokenList first = firstSubmission.getTokenList();
         TokenList second = secondSubmission.getTokenList();
@@ -139,10 +139,10 @@ public class GreedyStringTiling {
         markTokens(second, isBaseCodeComparison);
 
         // create hashes:
-        if (first.hash_length != minimumTokenMatch) {
+        if (first.hashLength != minimumTokenMatch) {
             createHashes(first, minimumTokenMatch, isBaseCodeComparison); // don't make table if it is not a base code comparison
         }
-        if (second.hash_length != minimumTokenMatch || second.tokenHashes == null) {
+        if (second.hashLength != minimumTokenMatch || second.tokenHashes == null) {
             createHashes(second, minimumTokenMatch, true);
         }
 

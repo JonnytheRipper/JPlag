@@ -4,13 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Hashtable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import antlr.Token;
 
 import de.jplag.AbstractParser;
+import de.jplag.ErrorConsumer;
 import de.jplag.TokenConstants;
 import de.jplag.TokenList;
 
 public class Parser extends AbstractParser {
+
+    private static final Logger logger = LoggerFactory.getLogger(Parser.class);
 
     protected Hashtable<String, Integer> table = new Hashtable<>();
     protected int serial = 1; // 0 is FILE_END token
@@ -21,7 +27,15 @@ public class Parser extends AbstractParser {
 
     private boolean runOut = false;
 
-    public TokenList parse(File directory, String files[]) {
+    /**
+     * Creates the parser.
+     * @param errorConsumer is the consumer for any occurring errors.
+     */
+    public Parser(ErrorConsumer errorConsumer) {
+        super(errorConsumer);
+    }
+
+    public TokenList parse(File directory, String[] files) {
         tokens = new TokenList();
         errors = 0;
         for (String file : files) {
@@ -33,7 +47,6 @@ public class Parser extends AbstractParser {
 
         TokenList tmp = tokens;
         tokens = null;
-        this.parseEnd();
         return tmp;
     }
 
@@ -48,7 +61,7 @@ public class Parser extends AbstractParser {
         runOut = true;
         errors++;
         errorConsumer.print("ERROR: Out of serials!", null);
-        System.out.println("de.jplag.text.Parser: ERROR: Out of serials!");
+        logger.error("de.jplag.text.Parser: ERROR: Out of serials!");
     }
 
     private boolean parseFile(File directory, String file) {
