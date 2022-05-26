@@ -13,14 +13,20 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import de.jplag.AbstractParser;
+import de.jplag.ErrorConsumer;
 import de.jplag.TokenList;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Lexer;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser;
 import de.jplag.gasI386Amd64.grammar.GasI386Amd64Parser.ProgramContext;
 
 public class Parser extends AbstractParser implements GasI386Amd64TokenConstants {
+
     private TokenList tokenList;
     private String currentFile;
+
+    public Parser(ErrorConsumer errorConsumer) {
+        super(errorConsumer);
+    }
 
     public TokenList parse(File dir, String files[]) {
         errors = 0;
@@ -32,7 +38,6 @@ public class Parser extends AbstractParser implements GasI386Amd64TokenConstants
                 errors++;
             tokenList.addToken(new GasI386Amd64Token(FILE_END, files[i], -1, -1, -1));
         }
-        this.parseEnd();
         return tokenList;
     }
 
